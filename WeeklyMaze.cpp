@@ -38,6 +38,7 @@ struct troll {
 	int pos_x;
 	int pos_y;
 	int hp;
+	bool alive;
 	char symbol;
 public:
 	void randPos(int maxX, int maxY, string maze[]) {
@@ -131,6 +132,7 @@ int main()
 		hero.randPos(width, height, maze_string);
 
 		troll.symbol = troll_symbol;
+		troll.alive = true;
 		troll.randPos(width, height, maze_string);
 		
 
@@ -139,7 +141,9 @@ int main()
 			//update hero position
 			maze_string[hero.pos_y][hero.pos_x] = hero.symbol;
 			//update troll position
-			maze_string[troll.pos_y][troll.pos_x] = troll.symbol;
+			if (troll.alive == true) {
+				maze_string[troll.pos_y][troll.pos_x] = troll.symbol;
+			}
 			//draw map
 			drawMap(hero.pos_x, hero.pos_y, width, height, hero.sightDistance, maze_string);
 		}
@@ -153,10 +157,11 @@ int main()
 				next_spot_wall = maze_string[hero.pos_y - 2][hero.pos_x];
 				switch (next_spot) {
 					case wall_symbol:
-						if (next_spot_wall == wall_symbol) {
+						if (next_spot_wall == wall_symbol || next_spot_wall == end_symbol) {
 							update = false;
 						}
 						else {
+							if (next_spot_wall == troll.symbol) { troll.alive = false; }
 							maze_string[hero.pos_y - 1][hero.pos_x] = ' ';
 							maze_string[hero.pos_y - 2][hero.pos_x] = wall_symbol;
 							maze_string[hero.pos_y][hero.pos_x] = ' ';
@@ -185,10 +190,11 @@ int main()
 				next_spot_wall = maze_string[hero.pos_y + 2][hero.pos_x];
 				switch (next_spot) {
 					case wall_symbol:
-						if (next_spot_wall == wall_symbol) {
+						if (next_spot_wall == wall_symbol || next_spot_wall == end_symbol) {
 							update = false;
 						}
 						else {
+							if (next_spot_wall == troll.symbol) { troll.alive = false; }
 							maze_string[hero.pos_y + 1][hero.pos_x] = ' ';
 							maze_string[hero.pos_y + 2][hero.pos_x] = wall_symbol;
 							maze_string[hero.pos_y][hero.pos_x] = ' ';
@@ -217,10 +223,11 @@ int main()
 				next_spot_wall = maze_string[hero.pos_y][hero.pos_x - 2];
 				switch (next_spot) {
 					case wall_symbol:
-						if (next_spot_wall == wall_symbol) {
+						if (next_spot_wall == wall_symbol || next_spot_wall == end_symbol) {
 							update = false;
 						}
 						else {
+							if (next_spot_wall == troll.symbol) { troll.alive = false; }
 							maze_string[hero.pos_y][hero.pos_x - 1] = ' ';
 							maze_string[hero.pos_y][hero.pos_x - 2] = wall_symbol;
 							maze_string[hero.pos_y][hero.pos_x] = ' ';
@@ -249,10 +256,11 @@ int main()
 				next_spot_wall = maze_string[hero.pos_y][hero.pos_x + 2];
 				switch (next_spot) {
 					case wall_symbol:
-						if (next_spot_wall == wall_symbol) {
+						if (next_spot_wall == wall_symbol || next_spot_wall == end_symbol) {
 							update = false;
 						}
 						else {
+							if (next_spot_wall == troll.symbol) { troll.alive = false; }
 							maze_string[hero.pos_y][hero.pos_x + 1] = ' ';
 							maze_string[hero.pos_y][hero.pos_x + 2] = wall_symbol;
 							maze_string[hero.pos_y][hero.pos_x] = ' ';
