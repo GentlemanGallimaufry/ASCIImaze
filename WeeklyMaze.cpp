@@ -4,6 +4,7 @@
 #include <cmath>
 #include <random>
 #include <conio.h>
+#include <windows.h>
 using namespace std;
 
 const char reset_key = 'q';
@@ -125,6 +126,16 @@ void gameOver() {
 	cout << "YOU LOSE!!!" << endl;
 }
 
+void showCursor(bool showFlag) //hide console cursor
+{
+	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO cursorInfo;
+	
+	GetConsoleCursorInfo(out, &cursorInfo);
+	cursorInfo.bVisible = showFlag;
+	SetConsoleCursorInfo(out, &cursorInfo);
+}
+
 int main()
 {
 	char next_spot;
@@ -143,7 +154,8 @@ int main()
 
 	hero.randPos(width, height, maze);
 	troll.randPos(width, height, maze);
-		
+	
+	showCursor(false); //hide console cursor
 
 	while (key_pressed != reset_key) {
 		if (update == true) {
